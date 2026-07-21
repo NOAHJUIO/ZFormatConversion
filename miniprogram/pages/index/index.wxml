@@ -1,75 +1,127 @@
 <view class="page">
-  <!-- Header -->
   <view class="header">
     <text class="logo">Ztransfer</text>
-    <text class="tagline">Document Converter</text>
   </view>
 
-  <!-- Section: Office -->
   <view class="section">
-    <text class="section-title">Office</text>
+    <text class="section-title">Office Documents</text>
     <view class="grid">
-      <view class="card {{selectedId === 'docx-pdf' ? 'card--active' : ''}}" bindtap="selectPair" data-id="docx-pdf" data-from="docx" data-to="pdf">
-        <text class="card-icon">DOC</text>
-        <text class="card-label">Word → PDF</text>
+      <view
+        class="card {{selectedId === 'docx-pdf' ? 'card--active' : ''}} {{animId === 'docx-pdf' ? 'card--pop' : ''}}"
+        bindtap="selectPair" data-id="docx-pdf" data-from="docx" data-to="pdf"
+      >
+        <view class="card-badge">W</view>
+        <text class="card-from">Word</text>
+        <view class="card-arrow"><text class="card-arrow-icon">→</text></view>
+        <text class="card-to">PDF</text>
+        <view class="card-check" wx:if="{{selectedId === 'docx-pdf'}}">✓</view>
       </view>
-      <view class="card {{selectedId === 'pdf-docx' ? 'card--active' : ''}}" bindtap="selectPair" data-id="pdf-docx" data-from="pdf" data-to="docx">
-        <text class="card-icon">PDF</text>
-        <text class="card-label">PDF → Word</text>
+
+      <view
+        class="card {{selectedId === 'pdf-docx' ? 'card--active' : ''}} {{animId === 'pdf-docx' ? 'card--pop' : ''}}"
+        bindtap="selectPair" data-id="pdf-docx" data-from="pdf" data-to="docx"
+      >
+        <view class="card-badge">P</view>
+        <text class="card-from">PDF</text>
+        <view class="card-arrow"><text class="card-arrow-icon">→</text></view>
+        <text class="card-to">Word</text>
+        <view class="card-check" wx:if="{{selectedId === 'pdf-docx'}}">✓</view>
       </view>
-      <view class="card {{selectedId === 'xlsx-pdf' ? 'card--active' : ''}}" bindtap="selectPair" data-id="xlsx-pdf" data-from="xlsx" data-to="pdf">
-        <text class="card-icon">XLS</text>
-        <text class="card-label">Excel → PDF</text>
+
+      <view
+        class="card {{selectedId === 'xlsx-pdf' ? 'card--active' : ''}} {{animId === 'xlsx-pdf' ? 'card--pop' : ''}}"
+        bindtap="selectPair" data-id="xlsx-pdf" data-from="xlsx" data-to="pdf"
+      >
+        <view class="card-badge">X</view>
+        <text class="card-from">Excel</text>
+        <view class="card-arrow"><text class="card-arrow-icon">→</text></view>
+        <text class="card-to">PDF</text>
+        <view class="card-check" wx:if="{{selectedId === 'xlsx-pdf'}}">✓</view>
       </view>
-      <view class="card {{selectedId === 'pdf-xlsx' ? 'card--active' : ''}}" bindtap="selectPair" data-id="pdf-xlsx" data-from="pdf" data-to="xlsx">
-        <text class="card-icon">PDF</text>
-        <text class="card-label">PDF → Excel</text>
+
+      <view
+        class="card {{selectedId === 'pdf-xlsx' ? 'card--active' : ''}} {{animId === 'pdf-xlsx' ? 'card--pop' : ''}}"
+        bindtap="selectPair" data-id="pdf-xlsx" data-from="pdf" data-to="xlsx"
+      >
+        <view class="card-badge">P</view>
+        <text class="card-from">PDF</text>
+        <view class="card-arrow"><text class="card-arrow-icon">→</text></view>
+        <text class="card-to">Excel</text>
+        <view class="card-check" wx:if="{{selectedId === 'pdf-xlsx'}}">✓</view>
       </view>
-      <view class="card {{selectedId === 'docx-xlsx' ? 'card--active' : ''}}" bindtap="selectPair" data-id="docx-xlsx" data-from="docx" data-to="xlsx">
-        <text class="card-icon">W→E</text>
-        <text class="card-label">Word → Excel</text>
+
+      <view
+        class="card {{selectedId === 'docx-xlsx' ? 'card--active' : ''}} {{animId === 'docx-xlsx' ? 'card--pop' : ''}}"
+        bindtap="selectPair" data-id="docx-xlsx" data-from="docx" data-to="xlsx"
+      >
+        <view class="card-badge">W</view>
+        <text class="card-from">Word</text>
+        <view class="card-arrow"><text class="card-arrow-icon">→</text></view>
+        <text class="card-to">Excel</text>
+        <view class="card-check" wx:if="{{selectedId === 'docx-xlsx'}}">✓</view>
       </view>
-      <view class="card {{selectedId === 'xlsx-docx' ? 'card--active' : ''}}" bindtap="selectPair" data-id="xlsx-docx" data-from="xlsx" data-to="docx">
-        <text class="card-icon">E→W</text>
-        <text class="card-label">Excel → Word</text>
+
+      <view
+        class="card {{selectedId === 'xlsx-docx' ? 'card--active' : ''}} {{animId === 'xlsx-docx' ? 'card--pop' : ''}}"
+        bindtap="selectPair" data-id="xlsx-docx" data-from="xlsx" data-to="docx"
+      >
+        <view class="card-badge">X</view>
+        <text class="card-from">Excel</text>
+        <view class="card-arrow"><text class="card-arrow-icon">→</text></view>
+        <text class="card-to">Word</text>
+        <view class="card-check" wx:if="{{selectedId === 'xlsx-docx'}}">✓</view>
       </view>
     </view>
   </view>
 
-  <!-- Section: Image -->
   <view class="section">
-    <text class="section-title">Image</text>
+    <text class="section-title">Images</text>
     <view class="grid">
-      <view class="card {{selectedId === 'img-pdf' ? 'card--active' : ''}}" bindtap="selectPair" data-id="img-pdf" data-from="jpg" data-to="pdf">
-        <text class="card-icon">IMG</text>
-        <text class="card-label">Image → PDF</text>
+      <view
+        class="card {{selectedId === 'img-pdf' ? 'card--active' : ''}} {{animId === 'img-pdf' ? 'card--pop' : ''}}"
+        bindtap="selectPair" data-id="img-pdf" data-from="jpg" data-to="pdf"
+      >
+        <view class="card-badge card-badge--img">◻</view>
+        <text class="card-from">Image</text>
+        <view class="card-arrow"><text class="card-arrow-icon">→</text></view>
+        <text class="card-to">PDF</text>
+        <view class="card-check" wx:if="{{selectedId === 'img-pdf'}}">✓</view>
       </view>
-      <view class="card {{selectedId === 'img-docx' ? 'card--active' : ''}}" bindtap="selectPair" data-id="img-docx" data-from="jpg" data-to="docx">
-        <text class="card-icon">IMG</text>
-        <text class="card-label">Image → Word</text>
+
+      <view
+        class="card {{selectedId === 'img-docx' ? 'card--active' : ''}} {{animId === 'img-docx' ? 'card--pop' : ''}}"
+        bindtap="selectPair" data-id="img-docx" data-from="jpg" data-to="docx"
+      >
+        <view class="card-badge card-badge--img">◻</view>
+        <text class="card-from">Image</text>
+        <view class="card-arrow"><text class="card-arrow-icon">→</text></view>
+        <text class="card-to">Word</text>
+        <view class="card-check" wx:if="{{selectedId === 'img-docx'}}">✓</view>
       </view>
     </view>
   </view>
 
-  <!-- File Upload Area -->
-  <view class="upload-zone {{selectedId ? 'upload-zone--visible' : ''}}">
+  <view class="upload-wrap {{selectedId ? 'upload-wrap--show' : ''}}">
     <view class="upload-tap" bindtap="chooseFile" wx:if="{{!fileName}}">
-      <text class="upload-icon">+</text>
-      <text class="upload-hint">Tap to select file</text>
+      <view class="upload-ring">+</view>
+      <text class="upload-text">Choose File</text>
     </view>
-    <view class="file-info" wx:if="{{fileName}}">
-      <view class="file-row">
-        <text class="file-name">{{fileName}}</text>
-        <text class="file-clear" bindtap="clearFile">✕</text>
+    <view class="file-chip" wx:if="{{fileName}}">
+      <text class="file-chip-name">{{fileName}}</text>
+      <text class="file-chip-size">{{fileSizeText}}</text>
+      <view class="file-chip-x" bindtap="clearFile">
+        <text>×</text>
       </view>
-      <text class="file-size">{{fileSizeText}}</text>
     </view>
   </view>
 
-  <!-- Convert Button -->
-  <button class="btn {{selectedId && fileName ? 'btn--ready' : ''}}" bindtap="doConvert" disabled="{{!selectedId || !fileName || converting}}">
-    <text wx:if="{{converting}}">Converting…</text>
-    <text wx:elif="{{selectedId && fileName}}">Convert Now</text>
-    <text wx:else>Select a format and file</text>
+  <button
+    class="convert-btn {{selectedId && fileName ? 'convert-btn--live' : ''}} {{converting ? 'convert-btn--busy' : ''}}"
+    bindtap="doConvert"
+    disabled="{{!selectedId || !fileName || converting}}"
+  >
+    <text wx:if="{{converting}}">Converting</text>
+    <text wx:elif="{{selectedId && fileName}}">Convert</text>
+    <text wx:else>Select a format, then a file</text>
   </button>
 </view>

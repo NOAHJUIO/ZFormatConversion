@@ -3,6 +3,7 @@ const app = getApp()
 Page({
   data: {
     selectedId: "",
+    animId: "",
     from: "",
     to: "",
     fileName: "",
@@ -15,24 +16,20 @@ Page({
     const { id, from, to } = e.currentTarget.dataset
     if (this.data.selectedId === id) {
       this.setData({ selectedId: "", from: "", to: "", fileName: "", filePath: "" })
-    } else {
-      this.setData({ selectedId: id, from, to, fileName: "", filePath: "" })
+      return
     }
+    this.setData({ selectedId: id, animId: id, from, to, fileName: "", filePath: "" })
+    setTimeout(() => { this.setData({ animId: "" }) }, 400)
   },
 
   chooseFile() {
-    const { from } = this.data
-    const isImage = ["jpg", "jpeg", "png", "bmp", "gif", "webp"].includes(from)
+    const imgTypes = ["jpg", "jpeg", "png", "bmp", "gif", "webp"]
     wx.chooseMessageFile({
       count: 1,
-      type: isImage ? "image" : "file",
+      type: imgTypes.includes(this.data.from) ? "image" : "file",
       success: (res) => {
         const f = res.tempFiles[0]
-        this.setData({
-          fileName: f.name,
-          fileSizeText: this._formatSize(f.size),
-          filePath: f.path
-        })
+        this.setData({ fileName: f.name, fileSizeText: this._fmt(f.size), filePath: f.path })
       }
     })
   },
@@ -44,16 +41,11 @@ Page({
   doConvert() {
     const { filePath, to } = this.data
     this.setData({ converting: true })
-
     wx.uploadFile({
-      url: app.globalData.apiBase + "/convert?target=" + to,
-      filePath,
-      name: "file",
+      url: `${app.globalData.apiBase}/convert?target=${to}`,
+      filePath, name: "file",
       success: (res) => {
-        wx.showToast({
-          title: res.statusCode === 200 ? "Done" : "Failed",
-          icon: res.statusCode === 200 ? "success" : "error"
-        })
+        wx.showToast({ title: res.statusCode === 200 ? "Done" : "Failed", icon: res.statusCode === 200 ? "success" : "error" })
         this.setData({ converting: false })
       },
       fail: () => {
@@ -63,9 +55,9 @@ Page({
     })
   },
 
-  _formatSize(bytes) {
-    if (bytes < 1024) return bytes + " B"
-    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + " KB"
-    return (bytes / (1024 * 1024)).toFixed(1) + " MB"
+  _fmt(n) {
+    if (n < 1024) return n + " B"
+    if (n < 1024 * 1024) return (n / 1024).toFixed(1) + " KB"
+    return (n / (1024 * 1024)).toFixed(1) + " MB"
   }
 })
