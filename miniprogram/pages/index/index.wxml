@@ -1,0 +1,33 @@
+<view class="container">
+  <view class="header">
+    <text class="title">Ztransfer</text>
+    <text class="subtitle">{{statusText}}</text>
+  </view>
+
+  <view class="picker-row">
+    <picker class="picker" mode="selector" range="{{sources}}" value="{{srcIndex}}" bindchange="onSrcChange">
+      <view class="picker-display">
+        <text class="picker-label">源格式</text>
+        <text class="picker-value">{{sources[srcIndex]}}</text>
+      </view>
+    </picker>
+    <text class="arrow">→</text>
+    <picker class="picker" mode="selector" range="{{targetList}}" value="{{tgtIndex}}" bindchange="onTgtChange">
+      <view class="picker-display">
+        <text class="picker-label">目标格式</text>
+        <text class="picker-value">{{targetList[tgtIndex]}}</text>
+      </view>
+    </picker>
+  </view>
+
+  <button class="btn-upload" bindtap="chooseFile">选择文件</button>
+
+  <view class="file-info" wx:if="{{fileName}}">
+    <text class="file-name">{{fileName}}</text>
+    <text class="file-size">{{fileSizeText}}</text>
+  </view>
+
+  <button class="btn-convert" bindtap="doConvert" disabled="{{!fileName || converting}}">
+    {{converting ? "转换中..." : "开始转换"}}
+  </button>
+</view>
