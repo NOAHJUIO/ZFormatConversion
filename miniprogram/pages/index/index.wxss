@@ -15,8 +15,10 @@
 /* ---------- Card ---------- */
 .card {
   width: calc(50% - 6rpx);
-  background: var(--card);
-  border: 0.5rpx solid var(--border);
+  background: rgba(28, 28, 30, 0.72);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 0.5rpx solid rgba(255, 255, 255, 0.1);
   border-radius: 16rpx;
   padding: 20rpx 16rpx;
   box-sizing: border-box;
@@ -26,10 +28,12 @@
               border-color 0.25s ease,
               background 0.25s ease;
 }
-.card:active { transform: scale(0.96); background: var(--card-hover); }
+.card:active { transform: scale(0.96); background: rgba(44, 44, 46, 0.72); }
 .card--active {
   border-color: rgba(10, 132, 255, 0.5);
-  background: rgba(10, 132, 255, 0.08);
+  background: rgba(10, 132, 255, 0.1);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
 }
 .card--pop {
   animation: cardPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -42,7 +46,9 @@
 
 .card-badge {
   width: 40rpx; height: 40rpx; border-radius: 10rpx;
-  background: rgba(255,255,255,0.06);
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   display: flex; align-items: center; justify-content: center;
   font-size: 22rpx; font-weight: 700; color: var(--text-secondary);
   margin-bottom: 10rpx;
@@ -60,12 +66,10 @@
 .card-arrow {
   margin: 6rpx 0;
   height: 2rpx;
-  background: rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.12);
   position: relative;
 }
-.card-arrow-icon {
-  display: none;
-}
+.card-arrow-icon { display: none; }
 
 .card-check {
   position: absolute;
@@ -74,7 +78,7 @@
   background: var(--accent);
   color: #fff;
   font-size: 20rpx; font-weight: 700;
-  display: flex; align-items: center; justify-content: center;
+  display: flex; align-items: center; justify-content: center; line-height: 1;
   animation: checkIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 @keyframes checkIn {
@@ -92,26 +96,30 @@
 .upload-wrap--show { opacity: 1; transform: translateY(0); pointer-events: auto; }
 
 .upload-tap {
-  background: var(--card);
-  border: 0.5rpx dashed rgba(255,255,255,0.1);
+  background: rgba(28, 28, 30, 0.72);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 0.5rpx dashed rgba(255,255,255,0.12);
   border-radius: 16rpx;
   padding: 28rpx;
   display: flex; align-items: center; justify-content: center;
   gap: 16rpx;
   transition: background 0.15s ease;
 }
-.upload-tap:active { background: var(--card-hover); }
+.upload-tap:active { background: rgba(44, 44, 46, 0.72); }
 .upload-ring {
   width: 44rpx; height: 44rpx; border-radius: 50%;
-  border: 1.5rpx solid rgba(255,255,255,0.15);
+  border: 1.5rpx solid rgba(255,255,255,0.2);
   display: flex; align-items: center; justify-content: center;
-  font-size: 32rpx; font-weight: 200; color: var(--text-secondary);
+  font-size: 32rpx; font-weight: 300; color: rgba(255,255,255,0.3);
 }
 .upload-text { font-size: 26rpx; color: var(--text-secondary); font-weight: 500; }
 
 /* File chip */
 .file-chip {
-  background: rgba(10,132,255,0.1);
+  background: rgba(10,132,255,0.12);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border: 0.5rpx solid rgba(10,132,255,0.3);
   border-radius: 16rpx;
   padding: 20rpx 20rpx 20rpx 24rpx;
@@ -137,15 +145,20 @@
 /* ---------- Convert Button ---------- */
 .convert-btn {
   position: fixed; bottom: 44rpx; left: 28rpx; right: 28rpx;
-  height: 88rpx; line-height: 88rpx; padding: 0;
-  background: var(--card); color: var(--text-secondary);
+  height: 88rpx; line-height: 88rpx; padding: 0; color: var(--text-secondary);
+  background: rgba(28, 28, 30, 0.82);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
   border: 0.5rpx solid var(--border); border-radius: 18rpx;
   font-size: 28rpx; font-weight: 600; letter-spacing: 0.3rpx;
   transition: all 0.35s ease;
 }
 .convert-btn[disabled] { opacity: 0.45; }
 .convert-btn--live {
-  background: var(--accent); color: #fff; border-color: var(--accent);
+  background: var(--accent); color: #fff;
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border-color: rgba(10,132,255,0.6);
   animation: btnGlow 2s ease-in-out infinite;
 }
 .convert-btn--live:active { transform: scale(0.97); opacity: 0.85; }
