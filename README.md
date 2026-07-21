@@ -34,8 +34,8 @@ miniprogram (WeChat) ──HTTPS──> FastAPI backend ──> LibreOffice / Pi
 
 ```bash
 # Clone
-git clone https://github.com/your-username/ztransfer.git
-cd ztransfer
+git clone https://github.com/NOAHZhou11/ZFormatConversion.git
+cd ZFormatConversion
 
 # Install Python dependencies
 pip install -r backend/requirements.txt
