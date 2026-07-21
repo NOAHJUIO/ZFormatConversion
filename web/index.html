@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Ztransfer</title>
+<style>
+:root{--bg:#000;--card:rgba(28,28,30,.72);--text:#fff;--text2:#8e8e93;--accent:#0a84ff;--accent-dim:rgba(10,132,255,.1);--border:rgba(255,255,255,.08)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;min-height:100vh}
+.page{padding:32px 28px 160px;max-width:480px;margin:0 auto}
+
+.header{padding:40px 0 36px}
+.logo{font-size:52px;font-weight:700;letter-spacing:-1.5px}
+
+.section{margin-bottom:32px}
+.section-title{font-size:13px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:16px}
+
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+.card{background:var(--card);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:.5px solid rgba(255,255,255,.1);border-radius:16px;padding:20px 16px;position:relative;overflow:hidden;cursor:pointer;transition:transform .35s cubic-bezier(.34,1.56,.64,1),border-color .25s ease,background .25s ease;user-select:none}
+.card:hover{background:rgba(44,44,46,.72)}
+.card:active{transform:scale(.96)}
+.card.active{border-color:rgba(10,132,255,.5);background:rgba(10,132,255,.1)}
+.card.pop{animation:cardPop .4s cubic-bezier(.34,1.56,.64,1)}
+@keyframes cardPop{0%{transform:scale(1)}40%{transform:scale(1.04)}100%{transform:scale(1)}}
+
+.card-badge{width:40px;height:40px;border-radius:10px;background:rgba(255,255,255,.1);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:var(--text2);margin-bottom:10px;transition:all .25s ease}
+.card.active .card-badge{background:var(--accent-dim);color:var(--accent)}
+
+.card-from,.card-to{font-size:16px;font-weight:600;line-height:1.2}
+.card-from{color:var(--text)}
+.card-to{color:var(--accent);margin-top:2px}
+.card-arrow{height:2px;background:rgba(255,255,255,.12);margin:6px 0}
+
+.card-check{position:absolute;top:10px;right:12px;width:28px;height:28px;border-radius:50%;background:var(--accent);color:#fff;font-size:14px;font-weight:700;display:none;align-items:center;justify-content:center;animation:checkIn .3s cubic-bezier(.34,1.56,.64,1)}
+.card.active .card-check{display:flex}
+@keyframes checkIn{0%{transform:scale(0);opacity:0}100%{transform:scale(1);opacity:1}}
+
+.upload-wrap{margin-top:8px;opacity:0;transform:translateY(12px);transition:all .4s cubic-bezier(.22,.61,.36,1);pointer-events:none}
+.upload-wrap.show{opacity:1;transform:translateY(0);pointer-events:auto}
+.upload-tap{background:rgba(28,28,30,.72);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:.5px dashed rgba(255,255,255,.12);border-radius:16px;padding:28px;display:flex;align-items:center;justify-content:center;gap:16px;cursor:pointer;transition:background .15s}
+.upload-tap:hover{background:rgba(44,44,46,.72)}
+.upload-ring{width:44px;height:44px;border-radius:50%;border:1.5px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:300;color:rgba(255,255,255,.3)}
+.upload-text{font-size:15px;color:var(--text2);font-weight:500}
+#fileInput{display:none}
+
+.file-chip{background:rgba(10,132,255,.12);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:.5px solid rgba(10,132,255,.3);border-radius:16px;padding:20px;display:flex;align-items:center;gap:12px;animation:chipIn .3s cubic-bezier(.22,.61,.36,1)}
+@keyframes chipIn{0%{opacity:0;transform:scale(.95)}100%{opacity:1;transform:scale(1)}}
+.file-chip-name{flex:1;font-size:15px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.file-chip-size{font-size:13px;color:var(--text2)}
+.file-chip-x{width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--text2);cursor:pointer;border:none}
+
+.btn-convert{position:fixed;bottom:44px;left:28px;right:28px;max-width:424px;margin:0 auto;height:88px;line-height:88px;padding:0;color:var(--text2);background:rgba(28,28,30,.82);backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);border:.5px solid var(--border);border-radius:18px;font-size:17px;font-weight:600;cursor:pointer;transition:all .35s ease;text-align:center}
+.btn-convert:disabled{opacity:.45;cursor:not-allowed}
+.btn-convert.ready{background:var(--accent);color:#fff;border-color:rgba(10,132,255,.6);animation:btnGlow 2s ease-in-out infinite}
+.btn-convert.ready:active{transform:scale(.97);opacity:.85}
+.btn-convert.busy{animation:btnBusy .8s ease-in-out infinite}
+@keyframes btnGlow{0%,100%{box-shadow:none}50%{box-shadow:0 0 32px rgba(10,132,255,.25)}}
+@keyframes btnBusy{0%,100%{opacity:1}50%{opacity:.7}}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="header"><div class="logo">Ztransfer</div></div>
+
+  <div class="section">
+    <div class="section-title">Office Documents</div>
+    <div class="grid" id="officeGrid"></div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Images</div>
+    <div class="grid" id="imageGrid"></div>
+  </div>
+
+  <div class="upload-wrap" id="uploadWrap">
+    <div class="upload-tap" id="uploadTap">
+      <div class="upload-ring">+</div>
+      <div class="upload-text">Choose File</div>
+    </div>
+    <div class="file-chip" id="fileChip" style="display:none">
+      <div class="file-chip-name" id="fileName"></div>
+      <div class="file-chip-size" id="fileSize"></div>
+      <button class="file-chip-x" id="fileClear">X</button>
+    </div>
+  </div>
+  <input type="file" id="fileInput">
+
+  <button class="btn-convert" id="convertBtn" disabled>Select a format, then a file</button>
+</div>
+
+<script>
+var API = 'http://127.0.0.1:8000';
+var pairs = [
+  {id:'docx-pdf',badge:'W',from:'Word',to:'PDF',ext:'docx',target:'pdf',group:'office'},
+  {id:'pdf-docx',badge:'P',from:'PDF',to:'Word',ext:'pdf',target:'docx',group:'office'},
+  {id:'xlsx-pdf',badge:'X',from:'Excel',to:'PDF',ext:'xlsx',target:'pdf',group:'office'},
+  {id:'pdf-xlsx',badge:'P',from:'PDF',to:'Excel',ext:'pdf',target:'xlsx',group:'office'},
+  {id:'docx-xlsx',badge:'W',from:'Word',to:'Excel',ext:'docx',target:'xlsx',group:'office'},
+  {id:'xlsx-docx',badge:'X',from:'Excel',to:'Word',ext:'xlsx',target:'docx',group:'office'},
+  {id:'img-pdf',badge:'Img',from:'Image',to:'PDF',ext:'jpg',target:'pdf',group:'image'},
+  {id:'img-docx',badge:'Img',from:'Image',to:'Word',ext:'jpg',target:'docx',group:'image'}
+];
+var selected = null;
+var selectedFile = null;
+
+function render() {
+  document.getElementById('officeGrid').innerHTML = pairs.filter(function(p){return p.group==='office'}).map(cardHTML).join('');
+  document.getElementById('imageGrid').innerHTML = pairs.filter(function(p){return p.group==='image'}).map(cardHTML).join('');
+}
+
+function cardHTML(p) {
+  var act = (selected && selected.id===p.id) ? ' active' : '';
+  var id = p.id; var ext = p.ext; var target = p.target;
+  return '<div class="card'+act+'" onclick="selectPair(this,\''+id+'\',\''+ext+'\',\''+target+'\')"><div class="card-badge">'+p.badge+'</div><div class="card-from">'+p.from+'</div><div class="card-arrow"></div><div class="card-to">'+p.to+'</div><div class="card-check">&#10003;</div></div>';
+}
+
+function selectPair(el, id, ext, target) {
+  if (selected && selected.id === id) {
+    selected = null;
+    selectedFile = null;
+  } else {
+    selected = {id:id, ext:ext, target:target};
+    el.classList.add('pop');
+    setTimeout(function(){ el.classList.remove('pop'); }, 400);
+  }
+  document.querySelectorAll('.card').forEach(function(c){ c.classList.remove('active'); });
+  if (selected) {
+    el.classList.add('active');
+    selectedFile = null;
+  }
+  updateUI();
+}
+
+document.getElementById('uploadTap').onclick = function() {
+  document.getElementById('fileInput').click();
+};
+
+document.getElementById('fileInput').onchange = function(e) {
+  var f = e.target.files[0];
+  if (!f) return;
+  selectedFile = f;
+  document.getElementById('fileName').textContent = f.name;
+  document.getElementById('fileSize').textContent = formatSize(f.size);
+  document.getElementById('uploadTap').style.display = 'none';
+  document.getElementById('fileChip').style.display = 'flex';
+  updateUI();
+};
+
+document.getElementById('fileClear').onclick = function() {
+  selectedFile = null;
+  document.getElementById('fileInput').value = '';
+  document.getElementById('uploadTap').style.display = '';
+  document.getElementById('fileChip').style.display = 'none';
+  updateUI();
+};
+
+function updateUI() {
+  document.getElementById('uploadWrap').classList.toggle('show', !!selected);
+  var ready = selected && selectedFile;
+  var btn = document.getElementById('convertBtn');
+  btn.classList.toggle('ready', ready);
+  btn.disabled = !ready;
+  btn.textContent = ready ? 'Convert' : 'Select a format, then a file';
+}
+
+document.getElementById('convertBtn').onclick = async function() {
+  if (!selected || !selectedFile) return;
+  var btn = document.getElementById('convertBtn');
+  btn.textContent = 'Converting';
+  btn.classList.add('busy');
+  var fd = new FormData();
+  fd.append('file', selectedFile);
+  try {
+    var r = await fetch(API + '/convert?target=' + selected.target, {method:'POST', body:fd});
+    if (!r.ok) { var t = await r.text(); throw new Error(t); }
+    var blob = await r.blob();
+    var origName = selectedFile.name.replace(/\.[^.]+$/, '');
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = origName + '.' + selected.target;
+    a.click();
+    URL.revokeObjectURL(a.href);
+  } catch(e) {
+    alert('Conversion failed: ' + e.message);
+  }
+  btn.textContent = 'Select a format, then a file';
+  btn.classList.remove('busy', 'ready');
+  btn.disabled = false;
+  selected = null;
+  selectedFile = null;
+  document.getElementById('fileInput').value = '';
+  document.getElementById('uploadTap').style.display = '';
+  document.getElementById('fileChip').style.display = 'none';
+  document.querySelectorAll('.card').forEach(function(c){ c.classList.remove('active'); });
+  document.getElementById('uploadWrap').classList.remove('show');
+  render();
+};
+
+function formatSize(b) {
+  if (b < 1024) return b + ' B';
+  if (b < 1048576) return (b/1024).toFixed(1) + ' KB';
+  return (b/1048576).toFixed(1) + ' MB';
+}
+
+render();
+</script>
+</body>
+</html>

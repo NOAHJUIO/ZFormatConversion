@@ -6,7 +6,7 @@ import uuid
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 
 from fastapi import FastAPI, File, UploadFile, HTTPException, Query
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
 
 from backend.config import UPLOAD_DIR, OUTPUT_DIR, MAX_FILE_SIZE, ALL_PAIRS, EXTENSION_MIME, IMAGE_PAIRS
@@ -22,6 +22,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
+@app.get("/")
+def index():
+    web_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "web", "index.html")
+    if os.path.exists(web_path):
+        with open(web_path, encoding="utf-8") as f:
+            return HTMLResponse(f.read())
+    return HTMLResponse("<h1>Ztransfer API</h1><p>Visit <a href=\"/docs\">/docs</a> for API docs.</p>")
 
 @app.get("/health")
 def health():
