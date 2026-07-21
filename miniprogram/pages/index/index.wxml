@@ -1,33 +1,75 @@
-<view class="container">
+<view class="page">
+  <!-- Header -->
   <view class="header">
-    <text class="title">Ztransfer</text>
-    <text class="subtitle">{{statusText}}</text>
+    <text class="logo">Ztransfer</text>
+    <text class="tagline">Document Converter</text>
   </view>
 
-  <view class="picker-row">
-    <picker class="picker" mode="selector" range="{{sources}}" value="{{srcIndex}}" bindchange="onSrcChange">
-      <view class="picker-display">
-        <text class="picker-label">源格式</text>
-        <text class="picker-value">{{sources[srcIndex]}}</text>
+  <!-- Section: Office -->
+  <view class="section">
+    <text class="section-title">Office</text>
+    <view class="grid">
+      <view class="card {{selectedId === 'docx-pdf' ? 'card--active' : ''}}" bindtap="selectPair" data-id="docx-pdf" data-from="docx" data-to="pdf">
+        <text class="card-icon">DOC</text>
+        <text class="card-label">Word → PDF</text>
       </view>
-    </picker>
-    <text class="arrow">→</text>
-    <picker class="picker" mode="selector" range="{{targetList}}" value="{{tgtIndex}}" bindchange="onTgtChange">
-      <view class="picker-display">
-        <text class="picker-label">目标格式</text>
-        <text class="picker-value">{{targetList[tgtIndex]}}</text>
+      <view class="card {{selectedId === 'pdf-docx' ? 'card--active' : ''}}" bindtap="selectPair" data-id="pdf-docx" data-from="pdf" data-to="docx">
+        <text class="card-icon">PDF</text>
+        <text class="card-label">PDF → Word</text>
       </view>
-    </picker>
+      <view class="card {{selectedId === 'xlsx-pdf' ? 'card--active' : ''}}" bindtap="selectPair" data-id="xlsx-pdf" data-from="xlsx" data-to="pdf">
+        <text class="card-icon">XLS</text>
+        <text class="card-label">Excel → PDF</text>
+      </view>
+      <view class="card {{selectedId === 'pdf-xlsx' ? 'card--active' : ''}}" bindtap="selectPair" data-id="pdf-xlsx" data-from="pdf" data-to="xlsx">
+        <text class="card-icon">PDF</text>
+        <text class="card-label">PDF → Excel</text>
+      </view>
+      <view class="card {{selectedId === 'docx-xlsx' ? 'card--active' : ''}}" bindtap="selectPair" data-id="docx-xlsx" data-from="docx" data-to="xlsx">
+        <text class="card-icon">W→E</text>
+        <text class="card-label">Word → Excel</text>
+      </view>
+      <view class="card {{selectedId === 'xlsx-docx' ? 'card--active' : ''}}" bindtap="selectPair" data-id="xlsx-docx" data-from="xlsx" data-to="docx">
+        <text class="card-icon">E→W</text>
+        <text class="card-label">Excel → Word</text>
+      </view>
+    </view>
   </view>
 
-  <button class="btn-upload" bindtap="chooseFile">选择文件</button>
-
-  <view class="file-info" wx:if="{{fileName}}">
-    <text class="file-name">{{fileName}}</text>
-    <text class="file-size">{{fileSizeText}}</text>
+  <!-- Section: Image -->
+  <view class="section">
+    <text class="section-title">Image</text>
+    <view class="grid">
+      <view class="card {{selectedId === 'img-pdf' ? 'card--active' : ''}}" bindtap="selectPair" data-id="img-pdf" data-from="jpg" data-to="pdf">
+        <text class="card-icon">IMG</text>
+        <text class="card-label">Image → PDF</text>
+      </view>
+      <view class="card {{selectedId === 'img-docx' ? 'card--active' : ''}}" bindtap="selectPair" data-id="img-docx" data-from="jpg" data-to="docx">
+        <text class="card-icon">IMG</text>
+        <text class="card-label">Image → Word</text>
+      </view>
+    </view>
   </view>
 
-  <button class="btn-convert" bindtap="doConvert" disabled="{{!fileName || converting}}">
-    {{converting ? "转换中..." : "开始转换"}}
+  <!-- File Upload Area -->
+  <view class="upload-zone {{selectedId ? 'upload-zone--visible' : ''}}">
+    <view class="upload-tap" bindtap="chooseFile" wx:if="{{!fileName}}">
+      <text class="upload-icon">+</text>
+      <text class="upload-hint">Tap to select file</text>
+    </view>
+    <view class="file-info" wx:if="{{fileName}}">
+      <view class="file-row">
+        <text class="file-name">{{fileName}}</text>
+        <text class="file-clear" bindtap="clearFile">✕</text>
+      </view>
+      <text class="file-size">{{fileSizeText}}</text>
+    </view>
+  </view>
+
+  <!-- Convert Button -->
+  <button class="btn {{selectedId && fileName ? 'btn--ready' : ''}}" bindtap="doConvert" disabled="{{!selectedId || !fileName || converting}}">
+    <text wx:if="{{converting}}">Converting…</text>
+    <text wx:elif="{{selectedId && fileName}}">Convert Now</text>
+    <text wx:else>Select a format and file</text>
   </button>
 </view>
