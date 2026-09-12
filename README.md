@@ -96,6 +96,4 @@ ztransfer/
 └── README.md
 ```
 
-## License
 
-MIT
